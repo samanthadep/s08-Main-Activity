@@ -55,8 +55,8 @@ function Pokemon(name, health, attack, level, exp, isFaint){
 }
 
 // Pokémon Information
-const Pikachu = new Pokemon('Pikachu', 60, 45, 10, 0);
-const Charmander = new Pokemon('Charmander', 50, 55, 15, 0);
+const Pikachu = new Pokemon('Pikachu', 100, 50, 3, 0);
+const Charmander = new Pokemon('Charmander', 100, 50, 3, 0);
 
 // Dialogue
 trainer.speak(trainer2);
