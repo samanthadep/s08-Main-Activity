@@ -1,99 +1,74 @@
 console.log("Hello World");
 
-// Pokemon Game
-let myPokemon = {
-    name: 'Pikachu',
-    level: 3,
-    health: 100,
-    attack: 50,
-    tackle: function(targetPokemon) {
-        console.log("The pokemon tackled the " + targetPokemon.name);
-        targetPokemon.health -= this.attack;
-        console.log(targetPokemon.name + "'s health is now reduced to " + targetPokemon.health);
-        if (targetPokemon.health <= 0) {
-            targetPokemon.faint();
-        }
+let trainer = {
+    name: 'Ash',
+    age: 19,
+    region: 'Pade',
+    speak: function(target){
+        console.log(`I challenge you ${target.name}`);
     },
-    faint: function() {
-        console.log("The pokemon fainted");
+    pick: function(pokemon){
+        console.log(`${this.name}: I choose ${pokemon.name}`);
     }
 };
 
-class Pokemon {
-    constructor(name, level, health, attack) {
-        this.name = name;
-        this.level = level;
-        this.health = health;
-        this.attack = attack;
+let trainer2 = {
+    name: 'Eli',
+    age: 23,
+    region: 'Kento',
+    speak: function(target){
+        console.log(`I accept your challenge ${target.name}`);
+    },
+    pick: function(pokemon){
+        console.log(`${this.name}: I choose ${pokemon.name}`);
     }
+};
 
-    tackle(target) {
-        console.log(`${this.name} tackled ${target.name}`);
-        target.health -= this.attack;
-        console.log(`${target.name}'s health is now reduced to ${target.health}`);
-        if (target.health <= 0) {
-            target.faint();
+function Pokemon(name, health, attack, level, exp, isFaint){
+    this.name = name;
+    this.health = 2 * health;
+    this.attack = attack;
+    this.level = level;
+    this.exp = exp;
+    this.isFaint = false;
+
+    // Attack method
+    this.tackle = function(target){
+        if(!this.isFaint){
+            console.log(`${this.name} used tackle`);
+            target.health -= this.attack;
+            if(target.health <= 0){
+                target.health = 0;
+                console.log(`${target.name} had fainted`);
+                target.isFaint = true;
+                console.log(`${trainer.name} has defeated ${trainer2.name}`);
+                this.level++;
+                console.log(`${this.name} leveled up to ${this.level}!`);
+            }
         }
-    }
+        if(this.level === 16){
+            let initialName = this.name;
+            this.name = 'Marshtomp';
+            console.log(`${initialName} has evolved to ${this.name}`);
+        }
+    };
+}
 
-    faint() {
-        console.log(`${this.name} fainted`);
-    }
+// Pokémon Information
+const Pikachu = new Pokemon('Pikachu', 60, 45, 10, 0);
+const Charmander = new Pokemon('Charmander', 50, 55, 15, 0);
 
-    attackOpponent(opponent) {
-        console.log(`${this.name} attacks ${opponent.name}!`);
-        opponent.health -= this.attack;
-        console.log(`${opponent.name}'s health reduced to ${opponent.health}`);
+// Dialogue
+trainer.speak(trainer2);
+trainer2.speak(trainer);
+trainer.pick(Pikachu);
+trainer2.pick(Charmander);
+
+// Battle
+while(!Pikachu.isFaint && !Charmander.isFaint){
+    Charmander.tackle(Pikachu);
+    if(!Pikachu.isFaint){
+        Pikachu.tackle(Charmander);
     }
 }
 
-let pikachu = new Pokemon("Pikachu", 3, 100, 50);
-let rattata = new Pokemon("Rattata", 3, 100, 50);
-
-pikachu.tackle(rattata);
-
-// Trainer object
-let trainerAsh = {
-    name: "Ash",
-    age: 10,
-    pokemonTeam: [pikachu, rattata],
-    greet: function() {
-        console.log("Hello, my name is " + this.name + " and I am a Pokemon Trainer!");
-    }
-};
-
-console.log(trainerAsh.name);
-console.log(trainerAsh.age);
-trainerAsh.greet();
-
-let bulbasaur = new Pokemon("Bulbasaur", 3, 100, 50);
-let charmander = new Pokemon("Charmander", 3, 100, 50);
-
-bulbasaur.tackle(charmander);
-
-// Trainer object
-let trainerEli = {
-    name: "Eli",
-    age: 19,
-    pokemonTeam: [pikachu, rattata],
-    greet: function() {
-        console.log("Hello, my name is " + this.name + " and I am a Pokemon Trainer!");
-    },
-    addPokemon: function(pokemon) {
-        this.pokemonTeam.push(pokemon);
-        console.log(pokemon.name + " added to " + this.name + "'s team!");
-    }
-};
-
-let squirtle = new Pokemon('Squirtle', 3, 100, 50);
-
-pikachu.attackOpponent(charmander);
-charmander.attackOpponent(squirtle);
-
-console.log(trainerEli.name);
-console.log(trainerEli.age);
-trainerEli.greet();
-
-trainerEli.addPokemon(pikachu);
-trainerEli.addPokemon(charmander);
-trainerEli.addPokemon(squirtle);
